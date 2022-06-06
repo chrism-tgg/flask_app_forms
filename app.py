@@ -1,37 +1,43 @@
 #  global request object to access incoming request data will be submitted via HTML form.
 # url_for() function to generate URLs
-# flash() function to flash message when request is processed (requires setting a secret key)
 # redirect() function to redirect the client to a different location
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, url_for, redirect
+# from forms.py
+from forms import CourseForm
+# from config.py
 from config import Config
 
 app = Flask(__name__)
 # Get credentials from config.py
 app.config.from_object(Config)
 
-# Define some messages to display. This could be KV pairs data in real life.
-messages = [{'title': 'Message One',
-             'content': 'Message One Content'},
-            {'title': 'Message Two',
-             'content': 'Message Two Content'}
-            ]
+# Define dictionaries. In real life this would come from a database.
+courses_list = [{
+    'title': 'Python 101',
+    'description': 'Learn Python basics',
+    'price': 34,
+    'available': True,
+    'level': 'Beginner'
+    }]
 
-@app.route('/')
+
+@app.route('/', methods=('GET', 'POST'))
 def index():
-    return render_template('index.html', messages=messages)
+    # save the instance of the web form
+    form = CourseForm()
+    # when user submits valid form, append the contents and take them to courses page
+    if form.validate_on_submit():
+        courses_list.append({'title': form.title.data,
+                             'description': form.description.data,
+                             'price': form.price.data,
+                             'available': form.available.data,
+                             'level': form.level.data
+                             })
+        return redirect(url_for('courses'))
+    # render the form on the index page
+    return render_template('index.html', form=form)
 
-@app.route('/create/', methods=('GET','POST'))
-def create():
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        # flash a mesage if fields are incomplete
-        if not title:
-            flash('Title is required!')
-        elif not content:
-            flash('Content is required!')
-        # if fields are complete, add the form contents to the index page. Then redirect to index.
-        else:
-            messages.append({'title': title, 'content': content})
-            return redirect(url_for('index'))
-    return render_template('create.html')
+# display the course list
+@app.route('/courses/')
+def courses():
+    return render_template('courses.html', courses_list=courses_list)
