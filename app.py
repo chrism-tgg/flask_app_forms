@@ -3,7 +3,7 @@
 # redirect() function to redirect the client to a different location
 from flask import Flask, render_template, url_for, redirect
 # from forms.py
-from forms import CourseForm
+from forms import SurveyForm
 # from config.py
 from config import Config
 
@@ -12,32 +12,47 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Define dictionaries. In real life this would come from a database.
-courses_list = [{
-    'title': 'Python 101',
-    'description': 'Learn Python basics',
-    'price': 34,
-    'available': True,
-    'level': 'Beginner'
-    }]
+responses_list = [{
+    'name': 'Jane Doe',
+    'organization': 'The Gunter Group',
+    'email': 'janed@guntergroup.com',
+    'contact': True,
+    'level_q1': '1-rarely',
+    'level_q2': '4-always',
+    'level_q3': '1-rarely'
+    }
+    ,
+    {
+    'name': 'Enej Ode',
+    'organization': 'The Thunder Group',
+    'email': 'enej.ode@thundergroup.com',
+    'contact': False,
+    'level_q1': '4-always',
+    'level_q2': '4-always',
+    'level_q3': '2-sometimes'
+    }
+    ]
 
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
     # save the instance of the web form
-    form = CourseForm()
-    # when user submits valid form, append the contents and take them to courses page
+    form = SurveyForm()
+    # when user submits valid form, append the contents and take them to survey page
     if form.validate_on_submit():
-        courses_list.append({'title': form.title.data,
-                             'description': form.description.data,
-                             'price': form.price.data,
-                             'available': form.available.data,
-                             'level': form.level.data
+        responses_list.append({'name': form.name.data,
+                             'organization': form.organization.data,
+                             'email': form.email.data,
+                             'contact': form.contact.data,
+                             'level_q1': form.level_q1.data,
+                             'level_q2': form.level_q2.data,
+                             'level_q3': form.level_q2.data
                              })
-        return redirect(url_for('courses'))
+        return redirect(url_for('responses'))
     # render the form on the index page
     return render_template('index.html', form=form)
 
-# display the course list
-@app.route('/courses/')
-def courses():
-    return render_template('courses.html', courses_list=courses_list)
+# display the responses list
+@app.route('/responses/')
+def responses():
+    return render_template('responses.html', responses_list=responses_list)

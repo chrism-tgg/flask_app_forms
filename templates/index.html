@@ -1,76 +1,102 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Add a New Course {% endblock %}</h1>
+    <h1>{% block title %} Data Maturity Survey {% endblock %}</h1>
 
     <form method="POST" action="/">
         {{ form.csrf_token }}
         <p>
-            {{ form.title.label }}
-            {{ form.title(size=20) }}
+            {{ form.name.label }}
+            {{ form.name(size=20) }}
         </p>
 
-        {% if form.title.errors %}
+        {% if form.name.errors %}
             <ul class="errors">
-                {% for error in form.title.errors %}
+                {% for error in form.name.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
         <p>
-            {{ form.description.label }}
+            {{ form.organization.label }}
+            {{ form.organization(size=20) }}
         </p>
-        {{ form.description(rows=10, cols=50) }}
 
-        {% if form.description.errors %}
+        {% if form.organization.errors %}
             <ul class="errors">
-                {% for error in form.description.errors %}
+                {% for error in form.organization.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
         <p>
-            {{ form.price.label }}
-            {{ form.price() }}
+            {{ form.email.label }}
+            {{ form.email(size=20) }}
         </p>
 
-        {% if form.price.errors %}
+        {% if form.email.errors %}
             <ul class="errors">
-                {% for error in form.price.errors %}
+                {% for error in form.email.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
         <p>
-            {{ form.available() }} {{ form.available.label }}
+            {{ form.contact() }} {{ form.contact.label }}
         </p>
 
-        {% if form.available.errors %}
+        {% if form.contact.errors %}
             <ul class="errors">
-                {% for error in form.available.errors %}
+                {% for error in form.contact.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
         <p>
-            {{ form.level.label }}
-            {{ form.level() }}
+            {{ form.level_q1.label }}
+            {{ form.level_q1() }}
         </p>
 
-        {% if form.level.errors %}
+        {% if form.level_q1.errors %}
             <ul class="errors">
-                {% for error in form.level.errors %}
+                {% for error in form.level_q1.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
         <p>
-            <input type="submit" value="Add">
+            {{ form.level_q2.label }}
+            {{ form.level_q2() }}
+        </p>
+
+        {% if form.level_q2.errors %}
+            <ul class="errors">
+                {% for error in form.level_q2.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            {{ form.level_q3.label }}
+            {{ form.level_q3() }}
+        </p>
+
+        {% if form.level_q3.errors %}
+            <ul class="errors">
+                {% for error in form.level_q3.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            <input type="submit" value="Submit">
         </p>
     </form>
 

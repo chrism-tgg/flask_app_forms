@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Survey Responses {% endblock %}</h1>
+    <hr>
+    {% for response in responses_list %}
+        <h2> {{ response['name'] }} </h2>
+        <h4> {{ response['organization'] }} </h4>
+        <h4> {{ response['email'] }} </h4>
+        <p>Question 1 level: <i>({{ response['level_q1'] }})</i></p>
+        <p>Question 2 level: <i>({{ response['level_q2'] }})</i></p>
+        <p>Question 3 level: <i>({{ response['level_q2'] }})</i></p>
+        <p>Contact:
+            {% if response['contact'] %}
+                Would like to be contacted
+            {% else %}
+                Do not contact
+            {% endif %}</p>
+        <hr>
+    {% endfor %}
+{% endblock %}
